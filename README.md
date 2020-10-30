@@ -10,3 +10,6 @@ $ dotnet run -- -v -t <path-to-tracklist> -l <length-of-track-in-hh:mm:ss.ff-for
 ```powershell
 PS> ./splitFile.ps1 -timecodeFileName ./timecodes.txt -inputFile "<path-to-audio-file>" -album_artist "<artist-name>" -album "<album-name>"
 ```
+
+# Helpful Resources
+- https://wiki.multimedia.cx/index.php/FFmpeg_Metadata#QuickTime.2FMOV.2FMP4.2FM4A.2Fet_al.
