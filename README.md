@@ -25,7 +25,7 @@ There are two steps to processing files using this project.
 
     This process is handled by the PowerShell script. See Running - [PowerShell](#powershell) below.
 
-## Track lists
+## Track List
 
 A track list is a list of tracks with a start offset time from the beginning of the combined audio track.  The format is pretty strict since the parser is really naïve and expects only one format.
 
@@ -70,15 +70,70 @@ It will output the duration in the required `hh:mm:ss.ff` format.
 00:14:32.56
 ```
 
-# Running
+# Program & Script
 
 ## C#
+
+The C# application ingests the track list and converts it to a timecode file.  
+
+For more on track lists see the [Track List](#track-list) section.
+
+### Parameters
+ 
+The following options are available,
+
+```
+    -v, --verbose         Set output to verbose messages.
+
+    -t, --tracklist       Required. Tracklist to parse.
+
+    -l, --track-length    Required. Length of track in hh:mm:ss.ff format.
+
+    -o, --output          (Default: timecodes.txt) Output File
+
+    -d, --dry-run         (Default: false) Perform a dry-run
+
+    --help                Display this help screen.
+
+    --version             Display version information.
+```
+
+### Running
 
 ```bash
 $ dotnet run -- -v -t <path-to-tracklist> -l <length-of-track-in-hh:mm:ss.ff-format>
 ```
 
 ## PowerShell
+
+To process the timecode file a simple PowerShell script is used to parse it and then invoke `ffmpeg` to slice the combined track into each individual file.  If the `album` parameter is present and not empty it will create a folder with the provided album name and output each file there.  Otherwise, it will create a folder called `splitOutput` and deposit each generated file there.
+
+The script relies on `ffmpeg` to do the splitting and assigning of the metadata.  It copies the audio data as is and does not tanscode it.
+
+Set metadata fields within output files, based off of [this list](https://wiki.multimedia.cx/index.php/FFmpeg_Metadata#QuickTime.2FMOV.2FMP4.2FM4A.2Fet_al.).
+
+```powershell
+-metadata track="$currentTrack" -metadata title="$title" -metadata artist="$artist" -metadata album_artist="$album_artist" -metadata album="$album" -metadata genre="$genre"
+```
+
+Copy audio stream and set the start and end times within the original combined audio file.
+
+```powershell
+-c:a copy -ss "$startTime" -to "$endTime"
+```
+
+### Parameters
+
+```
+-timecodeFileName - Path to Timecode file
+-inputFile - Path to combined audio file
+-album_artist - Metadata - Album Artist
+-album - Metadata - Album
+-album_art - Metadata - Album Art (Currently not supported)
+-genre - Metadata - Genre
+```
+
+### Running
 
 ```powershell
 PS> ./splitFile.ps1 -timecodeFileName ./timecodes.txt -inputFile "<path-to-audio-file>" -album_artist "<artist-name>" -album "<album-name>" -genre "<genre>"
