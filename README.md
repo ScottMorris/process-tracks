@@ -38,7 +38,6 @@ Note the _single_ zero at the front of the time and the **–** (en dash) track 
 0:05:07 Artist 2 feat. Cool Person X – Second to None is Still Not One
 0:08:40 Artist 3 – Keep A-Rockn'
 0:11:34 Artist 4 and the Moonlight Band – That was the best way (I liked it)
-
 ```
 
 ## Timecodes
@@ -121,6 +120,8 @@ Copy audio stream and set the start and end times within the original combined a
 ```powershell
 -c:a copy -ss "$startTime" -to "$endTime"
 ```
+
+For more on track lists see the [Timecodes](#timecodes) section.
 
 ### Parameters
 
