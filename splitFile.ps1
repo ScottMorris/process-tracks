@@ -6,8 +6,6 @@ param (
 	[Parameter()][string]$album,
 	[Parameter()][string]$album_art,
 	[Parameter()][string]$genre
-
-	
 )
 
 function CheckIfDirectoryExistsAndCreateIfNot {

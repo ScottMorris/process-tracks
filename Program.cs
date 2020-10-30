@@ -5,7 +5,6 @@ using CommandLine;
 
 namespace process_tracks
 {
-
     public class Options
     {
         internal const string DefaultOutputName = "timecodes.txt";
@@ -80,6 +79,5 @@ namespace process_tracks
                 Console.WriteLine(message);
             }
         }
-
     }
 }
